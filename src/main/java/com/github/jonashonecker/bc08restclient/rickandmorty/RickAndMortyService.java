@@ -2,6 +2,7 @@ package com.github.jonashonecker.bc08restclient.rickandmorty;
 
 import com.github.jonashonecker.bc08restclient.rickandmorty.api.Characters;
 import com.github.jonashonecker.bc08restclient.rickandmorty.api.Character;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -12,9 +13,9 @@ public class RickAndMortyService {
 
     private final RestClient restClient;
 
-    public RickAndMortyService(RestClient.Builder restClientBuilder) {
+    public RickAndMortyService(RestClient.Builder restClientBuilder, @Value("${rickandmorty.api.base-url}") String basicUrl) {
         this.restClient = restClientBuilder
-                .baseUrl("https://rickandmortyapi.com/api")
+                .baseUrl(basicUrl)
                 .build();
     }
 

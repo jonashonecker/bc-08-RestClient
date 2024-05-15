@@ -5,6 +5,8 @@ import com.github.jonashonecker.bc08restclient.rickandmorty.api.Character;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
+
 @Service
 public class RickAndMortyService {
 
@@ -16,11 +18,12 @@ public class RickAndMortyService {
                 .build();
     }
 
-    public Characters getAllCharactersWithReducedProperties() {
+    public List<Character> getAllCharactersWithReducedProperties() {
         return this.restClient.get()
                 .uri("/character")
                 .retrieve()
-                .body(Characters.class);
+                .body(Characters.class)
+                .results();
     }
 
     public Character getCharacterWithReducedPropertiesById(String id) {
@@ -28,5 +31,11 @@ public class RickAndMortyService {
                 .uri("/character/{id}", id)
                 .retrieve()
                 .body(Character.class);
+    }
+
+    public List<Character> getAllCharactersWithReducedPropertiesByStatus(String status) {
+        return getAllCharactersWithReducedProperties().stream()
+                .filter(c -> c.status().equals(status))
+                .toList();
     }
 }
